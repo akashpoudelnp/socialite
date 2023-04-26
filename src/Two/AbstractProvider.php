@@ -103,6 +103,8 @@ abstract class AbstractProvider implements ProviderContract
      */
     protected $user;
 
+    protected $customState;
+
     /**
      * Create a new provider instance.
      *
@@ -128,7 +130,7 @@ abstract class AbstractProvider implements ProviderContract
      * @param  string  $state
      * @return string
      */
-    abstract public function getAuthUrl($state);
+    abstract protected function getAuthUrl($state);
 
     /**
      * Get the token URL for the provider.
@@ -459,6 +461,11 @@ abstract class AbstractProvider implements ProviderContract
         return $this;
     }
 
+    public function setCustomState($value)
+    {
+        $this->customState = $value;
+    }
+
     /**
      * Get the string used for session state.
      *
@@ -466,6 +473,10 @@ abstract class AbstractProvider implements ProviderContract
      */
     protected function getState()
     {
+        if($this->customState){
+            return $this->customState;
+        }
+
         return Str::random(40);
     }
 
